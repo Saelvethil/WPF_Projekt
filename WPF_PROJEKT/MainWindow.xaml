@@ -1,0 +1,222 @@
+﻿<Window x:Class="WPF_PROJEKT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WPF_PROJEKT"
+        Title="MainWindow" Height="350" Width="550" FontFamily="Segoe UI">
+    <Window.Background>
+        <ImageBrush ImageSource="images/background.jpg"></ImageBrush>
+    </Window.Background>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="local:Commands.Back" CanExecute="BackCanExecute" Executed="BackExecuted"/>
+        <CommandBinding Command="local:Commands.EditTask" CanExecute="EditTaskCanExecute" Executed="EditTaskExecuted"/>
+        <CommandBinding Command="local:Commands.EditSubtask" CanExecute="EditSubtaskCanExecute" Executed="EditSubtaskExecuted"/>
+        <CommandBinding Command="local:Commands.DeleteTask" CanExecute="DeleteTaskCanExecute" Executed="DeleteTaskExecuted"/>
+        <CommandBinding Command="local:Commands.DeleteSubtask" CanExecute="DeleteSubtaskCanExecute" Executed="DeleteSubtaskExecuted"/>
+    </Window.CommandBindings>
+
+    <Window.Resources>
+
+        <local:ColorConverter x:Key="ColorConverter" />
+        <local:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
+
+        <ControlTemplate x:Key="InvisibleButton" TargetType="{x:Type Button}">
+            <ContentPresenter />
+        </ControlTemplate>
+
+
+        <ControlTemplate x:Key="MenuButton" TargetType="Button">
+            <Border x:Name="Border" BorderThickness="0">
+                <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#CF00C13F" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#CF00C13F" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#AF00C13F"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+        <DataTemplate x:Key="CategoryTemplate">
+            <Button Template="{StaticResource InvisibleButton}" Click="Category_Click" Tag="{Binding Path=Name}">
+                <Grid Margin="15" Background="#AF00C13F">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" FontWeight="Bold" Content="{Binding Path=Name}" HorizontalAlignment="Center" FontSize="18"/>
+                    <Image Grid.Column="0" Grid.Row="1" Source="{Binding Path=ImagePath}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 10"/>
+                </Grid>
+            </Button>
+
+        </DataTemplate>
+
+        <DataTemplate x:Key="TaskTemplate">
+            <Button Template="{StaticResource InvisibleButton}" Click="Task_Click" Tag="{Binding}" MinHeight="60" MinWidth="150">
+                <Grid Margin="5" Background="#AF00C13F">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" FontWeight="Bold" Content="{Binding Path=Name}" HorizontalAlignment="Center"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="{Binding Path=StartDate, Converter={StaticResource DateTimeFormatConverter}}"  HorizontalAlignment="Left"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="{Binding Path=DueDate, Converter={StaticResource DateTimeFormatConverter}}"  HorizontalAlignment="Right"/>
+                </Grid>
+
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="local:Commands.EditTask" Header="Edit task" CommandParameter="{Binding}"/>
+                        <MenuItem Command="local:Commands.DeleteTask" Header="Delete task" CommandParameter="{Binding}"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+
+            </Button>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SubtaskTemplate">
+            <Button Template="{StaticResource InvisibleButton}" MinHeight="60" MinWidth="100" PreviewMouseLeftButtonDown="Subtask_PreviewMouseDown"  Tag="{Binding}">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="local:Commands.EditSubtask" CommandParameter="{Binding}" Header="Edit"/>
+                        <MenuItem Command="local:Commands.DeleteSubtask" CommandParameter="{Binding}" Header="Delete"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                <Grid Margin="10,5" Background="{Binding Priority,  Converter={StaticResource ColorConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" FontWeight="Bold" Text="{Binding Path=Name}"  TextWrapping="Wrap" MaxWidth="300"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Path=Description}" TextWrapping="Wrap" MaxWidth="300"/>
+                </Grid>
+            </Button>
+        </DataTemplate>
+
+        <ControlTemplate x:Key="SubtaskLists" TargetType="ItemsControl">
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden"  AllowDrop="True"  VerticalScrollBarVisibility="Auto" Background="#AF00C13F"  Margin="10">
+                <ItemsPresenter />
+            </ScrollViewer>
+        </ControlTemplate>
+        
+    </Window.Resources>
+
+    <DockPanel>
+        <Grid Height="50px" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Template="{StaticResource MenuButton}" Command="local:Commands.Back">
+                <Image Source="images/LeftRound.png"/>
+            </Button>
+            <Label  Name="LabelHeader" Grid.Column="1"  Background="#AF00C13F" Padding="0,0,50,0" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" FontSize="20" FontWeight="Bold"></Label>
+        </Grid>
+
+        <Grid Name="ContentPanel">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <Grid Name="Subtasks" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MinWidth="150"/>
+                        <ColumnDefinition Width="*"  MinWidth="150"/>
+                        <ColumnDefinition Width="*" MinWidth="150"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                        <Label Content="To Do"  FontWeight="Bold" FontSize="15" />
+                        <ComboBox Width="65" Margin="5 0 0 0" Tag="ToDo">
+                            <ComboBoxItem Content="None" Selected="SortNone" IsSelected="True"/>
+                            <ComboBoxItem Content="Name"  Selected="SortName"/>
+                            <ComboBoxItem Content="Priority" Selected="SortPriority"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                        <Label Content="Doing"  FontWeight="Bold" FontSize="15" />
+                        <ComboBox Width="65" Margin="5 0 0 0" Tag="Doing">
+                            <ComboBoxItem Content="None" Selected="SortNone" IsSelected="True"/>
+                            <ComboBoxItem Content="Name"  Selected="SortName"/>
+                            <ComboBoxItem Content="Priority" Selected="SortPriority"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                        <Label Content="Done" FontWeight="Bold"  FontSize="15" />
+                        <ComboBox Width="65" Margin="5 0 0 0" Tag="Done">
+                            <ComboBoxItem Content="None" Selected="SortNone" IsSelected="True"/>
+                            <ComboBoxItem Content="Name"  Selected="SortName"/>
+                            <ComboBoxItem Content="Priority" Selected="SortPriority"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <ItemsControl Template="{StaticResource SubtaskLists}" Grid.Column="0" Grid.Row="1" Name="ToDoCollection" ItemTemplate="{StaticResource SubtaskTemplate}" Drop="Subtask_Drop" />
+                    <ItemsControl Template="{StaticResource SubtaskLists}" Grid.Column="1" Grid.Row="1" Name="DoingCollection" ItemTemplate="{StaticResource SubtaskTemplate}" Drop="Subtask_Drop" />
+                    <ItemsControl Template="{StaticResource SubtaskLists}" Grid.Column="2" Grid.Row="1" Name="DoneCollection" ItemTemplate="{StaticResource SubtaskTemplate}" Drop="Subtask_Drop"/>
+                    <Button Grid.Column="0" Grid.Row="2"  Margin="10" HorizontalAlignment="Stretch" Content="Add..." Tag="ToDo" Click="AddSubtaskClick"/>
+                    <Button Grid.Column="1" Grid.Row="2"  Margin="10" HorizontalAlignment="Stretch" Content="Add..." Tag="Doing" Click="AddSubtaskClick"/>
+                    <Button Grid.Column="2" Grid.Row="2"  Margin="10" HorizontalAlignment="Stretch" Content="Add..." Tag="Done" Click="AddSubtaskClick"/>
+                </Grid>
+            </ScrollViewer>
+
+            <Grid Name="Categories"  Visibility="Visible" >
+                <ItemsControl Name="CategoriesCollection" ItemTemplate="{StaticResource CategoryTemplate}" Margin="20">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+
+            <Grid Name="Tasks"  Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <ItemsControl Name="TasksCollection" ItemTemplate="{StaticResource TaskTemplate}" Margin="20" >
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="3"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+                <Grid Margin="20,20,40,10" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Task name:"/>
+                    <TextBox Grid.Column="1" Margin="10,0" Name="TextBoxFilter" Width="150" TextChanged="TextBoxFilter_TextChanged" />
+                    <Button Grid.Column="2" HorizontalAlignment="Right" Content="Add..." Width="80" Click="ButtonAddTask_Click"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </DockPanel>
+
+</Window>

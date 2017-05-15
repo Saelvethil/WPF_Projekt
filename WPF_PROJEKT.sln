@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksGUI", "WPF_PROJEKT\TasksGUI.csproj", "{A5835238-1C3E-412B-95F5-F5B5978EB63E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksLogic", "TasksLogic\TasksLogic.csproj", "{C30169D9-9437-42A6-879C-2658C6160FFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5835238-1C3E-412B-95F5-F5B5978EB63E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5835238-1C3E-412B-95F5-F5B5978EB63E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5835238-1C3E-412B-95F5-F5B5978EB63E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5835238-1C3E-412B-95F5-F5B5978EB63E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C30169D9-9437-42A6-879C-2658C6160FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C30169D9-9437-42A6-879C-2658C6160FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C30169D9-9437-42A6-879C-2658C6160FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C30169D9-9437-42A6-879C-2658C6160FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

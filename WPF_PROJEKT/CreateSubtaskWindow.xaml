@@ -1,0 +1,39 @@
+﻿<Window x:Class="WPF_PROJEKT.CreateSubtaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WPF_PROJEKT"
+        Title="CreateSubtaskWindow" Height="340" Width="480" MinWidth="250"  FontFamily="Segoe UI">
+    <Window.Background>
+        <ImageBrush ImageSource="images/background.jpg"></ImageBrush>
+    </Window.Background>
+    <Grid Background="#AF00C13F" Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Label Content="Name:" Margin="10"></Label>
+        <Label Grid.Row="1" Content="Description:" Margin="10"></Label>
+        <Label Grid.Row="2" Content="Priority:" Margin="10"></Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Name="SubtaskNameTextBox" Margin="10" Text="{Binding Path=SubtaskName, ValidatesOnExceptions=True,  UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Grid.Row="1" Grid.Column="1" Name="SubtaskDescriptionTextBox" AcceptsReturn="True" TextWrapping="Wrap" MinLines="6" Margin="10" Text="{Binding Path=Result.Description}" />
+        <ComboBox Grid.Row="2" Grid.Column="1" Name="SubtaskPriorityComboBox" Background="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem.Background}" Margin="10">
+            <ComboBoxItem Content="Low" Background="GreenYellow"/>
+            <ComboBoxItem Content="Normal" Background="YellowGreen" IsSelected="True"/>
+            <ComboBoxItem Content="High" Background="Green"/>
+            <ComboBoxItem Content="VeryHigh" Background="DarkGreen"/>
+        </ComboBox>
+        <Button Name="CreateSubtaskConfirmButton" Content="Ok" Grid.Row="3" IsDefault="True" Margin="10" Command="Save">
+            <Button.CommandBindings>
+                <CommandBinding Command="Save" 
+                        Executed="Save_Executed" CanExecute="Save_CanExecute"/>
+            </Button.CommandBindings>
+        </Button>
+        <Button Name="CreateSubtaskCancelButton" Content="Cancel" Grid.Row="3" Grid.Column="1" IsCancel="True" Margin="10"></Button>
+    </Grid>
+</Window>

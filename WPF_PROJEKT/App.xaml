@@ -1,0 +1,92 @@
+﻿<Application x:Class="WPF_PROJEKT.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+        <SolidColorBrush x:Key="LabelForeground" Color="White" />
+        <SolidColorBrush x:Key="ButtonBackground" Color="Green" />
+        <SolidColorBrush x:Key="ButtonForeground" Color="White" />
+        <SolidColorBrush x:Key="ButtonMouseOverBackground" Color="#CF00C13F"/>
+        <SolidColorBrush x:Key="ButtonDisabledBackground" Color="Wheat" />
+        <SolidColorBrush x:Key="ComboBoxForeground" Color="White"/>
+        <SolidColorBrush x:Key="ComboBoxBackground" Color="Green"/>
+        <SolidColorBrush x:Key="ComboBoxItemSelectedBackground" Color="GreenYellow"/>
+        <SolidColorBrush x:Key="TextBoxBackground" Color="Green"/>
+        <SolidColorBrush x:Key="TextBoxForeground" Color="White"/>
+        <SolidColorBrush x:Key="ScrollBarBackground" Color="Green"/>
+        <SolidColorBrush x:Key="ContextMenuForeground" Color="White"/>
+        <SolidColorBrush x:Key="ContextMenuBackground" Color="Green"/>
+        <SolidColorBrush x:Key="MenuItemForeground" Color="White"/>
+        <SolidColorBrush x:Key="MenuItemBackground" Color="Green"/>
+
+
+        <Style TargetType="{x:Type Label}" >
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource ButtonBackground}" />
+            <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border">
+                            <Border.Background>
+                                <SolidColorBrush x:Name="BorderBrush" Color="White"/>
+                            </Border.Background>
+                            <Grid Margin="1" Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="4,5,4,4" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource ButtonMouseOverBackground}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Background" Value="{StaticResource ButtonDisabledBackground}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Foreground" Value="{StaticResource ComboBoxForeground}"/>
+            <Setter Property="Background" Value="{StaticResource ComboBoxBackground}"/>
+        </Style>
+
+        <Style TargetType="{x:Type ContextMenu}">
+            <Setter Property="Foreground" Value="{StaticResource ContextMenuForeground}"/>
+            <Setter Property="Background" Value="{StaticResource ContextMenuBackground}"/>
+        </Style>
+        
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="Foreground" Value="{StaticResource MenuItemForeground}"/>
+            <Setter Property="Background" Value="{StaticResource MenuItemBackground}"/>
+        </Style>
+
+        <Style TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Background" Value="{StaticResource ComboBoxBackground}" />
+            <Setter Property="Foreground" Value="{StaticResource ComboBoxForeground}" />
+            <Setter Property="Height" Value="18"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background"  Value="{StaticResource ComboBoxItemSelectedBackground}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{StaticResource TextBoxBackground}" />
+            <Setter Property="Foreground" Value="{StaticResource TextBoxForeground}" />
+        </Style>
+
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Background" Value="{StaticResource ScrollBarBackground}" />
+        </Style>
+
+    </Application.Resources>
+</Application>
